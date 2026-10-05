@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f4f6f2">
+    <title>{% block title %}CerviScope{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
+    {% block head %}{% endblock %}
+</head>
+<body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <header class="topbar">
+        <a class="brand" href="{{ url_for('home') if session.get('authenticated') else url_for('about') }}" aria-label="CerviScope home">
+            <span class="brand-mark" aria-hidden="true"><span></span></span><span>CERVISCOPE</span>
+        </a>
+        <nav class="header-nav" aria-label="Main navigation">
+            <a href="{{ url_for('about') }}" {% if request.endpoint == 'about' %}aria-current="page"{% endif %}>About</a>
+            <a href="{{ url_for('contact') }}" {% if request.endpoint == 'contact' %}aria-current="page"{% endif %}>Contact</a>
+            {% if session.get('authenticated') %}
+                <span class="account-name">{{ session.get('username') }}</span>
+                <form action="{{ url_for('logout') }}" method="post" class="logout-form">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                    <button class="logout-button" type="submit" aria-label="Sign out" title="Sign out">
+                        <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M8 3H4.5A1.5 1.5 0 0 0 3 4.5v11A1.5 1.5 0 0 0 4.5 17H8m3-10 4 3-4 3m4-3H7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </button>
+                </form>
+            {% else %}
+                <a class="header-login" href="{{ url_for('login') }}" {% if request.endpoint == 'login' %}aria-current="page"{% endif %}>Sign in</a>
+            {% endif %}
+        </nav>
+    </header>
+
+    <div class="app-shell{% if session.get('authenticated') %} has-sidebar{% endif %}">
+        {% if session.get('authenticated') %}
+        <aside class="side-nav" aria-label="Workspace navigation">
+            <p class="nav-label">WORKSPACE</p>
+            <nav class="side-links">
+                <a class="side-link{% if request.endpoint in ['home', 'success'] %} is-active{% endif %}" href="{{ url_for('home') }}" {% if request.endpoint in ['home', 'success'] %}aria-current="page"{% endif %}>
+                    <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 10h5V3H3v7Zm9 7h5V10h-5v7Zm0-10h5V3h-5v4Zm-9 10h5v-4H3v4Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg><span>Image analysis</span>
+                </a>
+                <a class="side-link{% if request.endpoint == 'about' %} is-active{% endif %}" href="{{ url_for('about') }}" {% if request.endpoint == 'about' %}aria-current="page"{% endif %}>
+                    <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.4"/><path d="M10 9v4m0-6h.01" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg><span>About the project</span>
+                </a>
+                <a class="side-link{% if request.endpoint == 'contact' %} is-active{% endif %}" href="{{ url_for('contact') }}" {% if request.endpoint == 'contact' %}aria-current="page"{% endif %}>
+                    <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="2.5" y="4" width="15" height="12" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="m3.5 5 6.5 5 6.5-5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Contact</span>
+                </a>
+            </nav>
+            <div class="sidebar-note"><span class="sidebar-note-mark" aria-hidden="true">i</span><p>Research support only. Model results require clinical review.</p></div>
+        </aside>
+        {% endif %}
+        <main class="main-content" id="main-content" tabindex="-1">
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+
+    <footer class="page-footer">
+        <div class="footer-brand"><span class="footer-brand-name">CERVISCOPE</span><span>Research interface</span></div>
+        <div class="footer-links"><a href="{{ url_for('about') }}">About</a><a href="{{ url_for('contact') }}">Contact</a><a href="{{ url_for('login') }}">Operator sign in</a></div>
+        <div class="powered-by" aria-label="Project attribution">
+            <span class="powered-label">Powered by #</span>
+            <span class="powered-author">Bekele Mulat</span>
+            <span class="footer-separator">•</span>
+            <span>University of Gondar</span>
+            <span class="footer-separator">•</span>
+            <a href="tel:+251936328953">+251-936 328 953</a>
+            <span class="footer-separator">•</span>
+            <a href="mailto:bekemuler3@gmail.com">bekemuler3@gmail.com</a>
+        </div>
+        <p class="footer-disclaimer">For research and educational use only. Not a medical diagnosis.</p>
+    </footer>
+</body>
+</html>

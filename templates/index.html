@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block title %}Image analysis | CerviScope{% endblock %}
+{% block content %}
+<div class="workspace">
+    <section class="intro" aria-labelledby="page-title">
+        <p class="eyebrow">COMPUTER-AIDED IMAGE REVIEW</p>
+        <h1 id="page-title">Classification of<br>precancerous cervical lesions</h1>
+        <p class="intro-copy">Squeezed Convolutional Neural Network</p>
+        <div class="model-chip"><span class="chip-pulse"></span> Squeezed CNN <span class="chip-divider"></span> 3 classes</div>
+    </section>
+    <section class="analysis-panel" aria-labelledby="upload-title">
+        <div class="panel-heading"><div><p class="eyebrow">NEW ANALYSIS</p><h2 id="upload-title">Select an image</h2></div><span class="step-number">01 <span>/ 01</span></span></div>
+        {% if error %}<div class="alert" role="alert">{{ error }}</div>{% endif %}
+        <form action="{{ url_for('success') }}" method="post" enctype="multipart/form-data" id="upload-form">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+            <label class="dropzone" for="image-file" id="dropzone">
+                <input id="image-file" class="file-input" type="file" name="file" accept=".jpg,.jpeg,.png,.jfif,image/jpeg,image/png" required>
+                <span class="upload-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M12 16V4m0 0L7.5 8.5M12 4l4.5 4.5M5 14.5v3A2.5 2.5 0 0 0 7.5 20h9a2.5 2.5 0 0 0 2.5-2.5v-3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                <span class="drop-title" id="file-title">Drop image here or <span>browse files</span></span>
+                <span class="drop-subtitle" id="file-subtitle">JPG, JPEG, PNG or JFIF <span class="bullet">·</span> Up to 16 MB</span>
+                <img class="file-preview" id="file-preview" alt="Selected image preview" hidden>
+            </label>
+            <div class="privacy-line"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 2.5 4 5v4.7c0 3.7 2.5 6.2 6 7.8 3.5-1.6 6-4.1 6-7.8V5l-6-2.5Z" stroke="currentColor" stroke-width="1.4"/><path d="m7.5 9.8 1.7 1.7 3.5-3.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Image processed in memory and not retained by this interface</div>
+            <button class="analyze-button" type="submit" id="submit-button"><span>Analyze image</span><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12m-5-5 5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        </form>
+        <p class="disclaimer">For research and educational use only. Not a medical diagnosis.</p>
+    </section>
+</div>
+<script>
+    const input = document.getElementById('image-file');
+    const dropzone = document.getElementById('dropzone');
+    const title = document.getElementById('file-title');
+    const subtitle = document.getElementById('file-subtitle');
+    const preview = document.getElementById('file-preview');
+    const form = document.getElementById('upload-form');
+    const button = document.getElementById('submit-button');
+
+    function showFile(file) {
+        if (!file) return;
+        title.textContent = file.name;
+        subtitle.textContent = `${(file.size / (1024 * 1024)).toFixed(2)} MB selected`;
+        if (file.type.startsWith('image/')) {
+            preview.src = URL.createObjectURL(file);
+            preview.hidden = false;
+            dropzone.classList.add('has-preview');
+        }
+    }
+
+    input.addEventListener('change', () => showFile(input.files[0]));
+    for (const eventName of ['dragenter', 'dragover']) {
+        dropzone.addEventListener(eventName, event => {
+            event.preventDefault();
+            dropzone.classList.add('is-dragging');
+        });
+    }
+    for (const eventName of ['dragleave', 'drop']) {
+        dropzone.addEventListener(eventName, event => {
+            event.preventDefault();
+            dropzone.classList.remove('is-dragging');
+        });
+    }
+    dropzone.addEventListener('drop', event => {
+        const [file] = event.dataTransfer.files;
+        if (file) {
+            input.files = event.dataTransfer.files;
+            showFile(file);
+        }
+    });
+    form.addEventListener('submit', () => {
+        button.disabled = true;
+        button.querySelector('span').textContent = 'Analyzing…';
+    });
+</script>
+{% endblock %}

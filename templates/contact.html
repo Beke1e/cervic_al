@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Contact | CerviScope{% endblock %}
+{% block content %}
+<div class="public-page contact-page">
+    <section class="page-heading">
+        <p class="eyebrow">GET IN TOUCH</p>
+        <h1>Contact the project</h1>
+        <p class="page-lede">Send a question about the research interface or its technical implementation.</p>
+    </section>
+    <section class="contact-layout">
+        <div class="contact-aside">
+            <div class="contact-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="m4 7 8 6 8-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <h2>Project enquiries</h2>
+            <p>Use the form to prepare a message in your default email application. You can review it before sending.</p>
+            <p class="contact-privacy">Do not include patient names, medical records, or other sensitive health information.</p>
+        </div>
+        <section class="contact-panel" aria-labelledby="contact-form-title">
+            <div class="panel-heading"><div><p class="eyebrow">MESSAGE</p><h2 id="contact-form-title">Write to us</h2></div></div>
+            {% if error %}<div class="alert" role="alert">{{ error }}</div>{% endif %}
+            <form action="{{ url_for('contact') }}" method="post" class="stacked-form">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                <label for="name">Your name</label><input id="name" name="name" type="text" autocomplete="name" maxlength="120" required>
+                <label for="email">Email address</label><input id="email" name="email" type="email" autocomplete="email" maxlength="254" required>
+                <label for="message">Message</label><textarea id="message" name="message" rows="5" maxlength="5000" required></textarea>
+                <button class="analyze-button" type="submit"><span>Prepare email</span><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 10h13m-5-5 5 5-5 5M3 5v10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            </form>
+            <p class="form-footnote">Your message is not sent automatically. It opens as a draft in your email application.</p>
+        </section>
+    </section>
+</div>
+{% endblock %}

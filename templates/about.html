@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}About | CerviScope{% endblock %}
+{% block content %}
+<div class="public-page info-page">
+    <section class="page-heading">
+        <p class="eyebrow">PROJECT OVERVIEW</p>
+        <h1>Research into cervical image classification</h1>
+        <p class="page-lede">CerviScope is an interface for exploring a Squeezed Convolutional Neural Network model for classification of precancerous cervical lesions.</p>
+    </section>
+    <section class="about-content">
+        <article class="about-copy">
+            <h2>What the system does</h2>
+            <p>The model analyzes an uploaded image and returns scores across three configured classes: Negative, Positive, and Suspicious. The scores are model outputs, not a diagnosis or a measure of clinical certainty.</p>
+            <h2>Designed for research use</h2>
+            <p>This application is intended for technical demonstration, research, and education. It has not been established as a screening, diagnostic, or treatment-planning device. Images should only be submitted when you have appropriate authorization to use them.</p>
+            <p>Image files are processed in memory by this interface and are not saved to an application upload folder. Standard server and infrastructure logs may still apply to the environment hosting the application.</p>
+        </article>
+        <aside class="model-facts" aria-label="Model information">
+            <p class="eyebrow">MODEL AT A GLANCE</p>
+            <dl>
+                <div><dt>Architecture</dt><dd>Squeezed CNN</dd></div>
+                <div><dt>Input</dt><dd>64 × 64 RGB image</dd></div>
+                <div><dt>Output classes</dt><dd>3 categories</dd></div>
+                <div><dt>Review</dt><dd>Qualified clinician required</dd></div>
+            </dl>
+            <a class="text-link" href="{{ url_for('contact') }}">Questions about the project <span aria-hidden="true">→</span></a>
+        </aside>
+    </section>
+</div>
+{% endblock %}

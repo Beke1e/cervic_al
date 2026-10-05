@@ -1,0 +1,77 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Start CerviScope app",
+			"type": "shell",
+			"command": "set \"CERVISCOPE_USERNAME=operator\" && set \"CERVISCOPE_PASSWORD=operator123\" && set \"CERVISCOPE_SECRET_KEY=dev-secret-key-1234567890\" && python app.py",
+			"isBackground": true,
+			"problemMatcher": [],
+			"group": "build"
+		},
+		{
+			"label": "Start CerviScope app debug",
+			"type": "shell",
+			"command": "set \"CERVISCOPE_USERNAME=operator\" && set \"CERVISCOPE_PASSWORD=operator123\" && set \"CERVISCOPE_SECRET_KEY=dev-secret-key-1234567890\" && python app.py",
+			"isBackground": false,
+			"problemMatcher": [],
+			"group": "build"
+		},
+		{
+			"label": "Start CerviScope app 2",
+			"type": "shell",
+			"command": "$env:CERVISCOPE_USERNAME = 'operator'; $env:CERVISCOPE_PASSWORD = 'operator123'; $env:CERVISCOPE_SECRET_KEY = 'dev-secret-key-1234567890'; python app.py",
+			"isBackground": false,
+			"problemMatcher": [],
+			"group": "build"
+		},
+		{
+			"label": "Restart CerviScope app with footer attribution",
+			"type": "shell",
+			"command": "$pids = Get-CimInstance Win32_Process -Filter \"Name = 'python.exe'\"; foreach ($p in $pids) { Stop-Process -Id $p.ProcessId -Force }; $env:CERVISCOPE_USERNAME = 'operator'; $env:CERVISCOPE_PASSWORD = 'operator123'; $env:CERVISCOPE_SECRET_KEY = 'dev-secret-key-1234567890'; python app.py",
+			"isBackground": false,
+			"problemMatcher": [],
+			"group": "build"
+		},
+		{
+			"label": "Initialize git repo and push to GitHub",
+			"type": "shell",
+			"command": "cd 'f:\\msc\\hibist\\cervic_al'; git init; git branch -M main; git config user.name 'Copilot'; git config user.email 'copilot@example.com'; git remote remove origin 2>$null; git remote add origin https://github.com/Beke1e/cervic_al.git; git add .; git commit -m \"Initial commit\n\nCo-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>\"; git push -u origin main",
+			"isBackground": false,
+			"problemMatcher": [],
+			"group": "build"
+		},
+		{
+			"label": "Check git status after failed push attempt",
+			"type": "shell",
+			"command": "cd 'f:\\msc\\hibist\\cervic_al'; git status --short --branch; git remote -v",
+			"isBackground": false,
+			"problemMatcher": [],
+			"group": "build"
+		},
+		{
+			"label": "Initialize repo and push to origin",
+			"type": "shell",
+			"command": "cmd /c \"cd /d f:\\msc\\hibist\\cervic_al && git init && git checkout -B main && git config user.name \"Copilot\" && git config user.email \"copilot@example.com\" && git remote add origin https://github.com/Beke1e/cervic_al.git && git add . && git commit -m \"Initial commit\" -m \"Co-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>\" && git push -u origin main\"",
+			"isBackground": false,
+			"problemMatcher": [],
+			"group": "build"
+		},
+		{
+			"label": "Init repo and push GitHub",
+			"type": "shell",
+			"command": "& cmd.exe /c 'cd /d \"f:\\msc\\hibist\\cervic_al\" && git init && git checkout -B main && git config user.name \"Copilot\" && git config user.email \"copilot@example.com\" && git remote add origin \"https://github.com/Beke1e/cervic_al.git\" && git add . && git commit -m \"Initial commit\" -m \"Co-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>\" && git push -u origin main'",
+			"isBackground": false,
+			"problemMatcher": [],
+			"group": "build"
+		},
+		{
+			"label": "Git init and push to GitHub",
+			"type": "shell",
+			"command": "cd 'f:\\msc\\hibist\\cervic_al'; git init; git branch -M main; git config user.name 'Copilot'; git config user.email 'copilot@example.com'; git remote add origin 'https://github.com/Beke1e/cervic_al.git'; git add .; git commit -m 'Initial commit' -m 'Co-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>'; git push -u origin main",
+			"isBackground": false,
+			"problemMatcher": [],
+			"group": "build"
+		}
+	]
+}

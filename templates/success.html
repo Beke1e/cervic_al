@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Classification results | CerviScope{% endblock %}
+{% block content %}
+<div class="results-workspace">
+    <section class="result-intro">
+        <p class="eyebrow">ANALYSIS COMPLETE <span class="result-check">✓</span></p>
+        <h1>Classification results</h1>
+        <p>Model output from the submitted cervical image.</p>
+    </section>
+    <section class="results-grid" aria-label="Image and classification results">
+        <div class="image-panel">
+            <div class="result-panel-heading"><span>INPUT IMAGE</span><span class="image-badge">Processed</span></div>
+            <img class="result-image" src="{{ image_data }}" alt="Uploaded cervical image analyzed by the model">
+            <p class="image-caption">Original image preview</p>
+        </div>
+        <div class="classification-panel">
+            <div class="result-panel-heading"><span>CLASS PROBABILITIES</span><span class="model-label">SQUEEZED CNN</span></div>
+            {% set top = predictions[0] %}
+            <div class="top-result">
+                <span class="top-result-label">TOP MODEL CLASS</span>
+                <div class="top-result-main"><h2>{{ top.name }}</h2><span>{{ top.probability }}%</span></div>
+                <div class="probability-track"><span style="width: {{ top.probability }}%"></span></div>
+            </div>
+            <div class="probability-list">
+                {% for prediction in predictions %}
+                <div class="probability-row{% if loop.first %} is-leading{% endif %}">
+                    <span class="rank">0{{ loop.index }}</span><span class="class-name">{{ prediction.name }}</span>
+                    <span class="row-track"><span style="width: {{ prediction.probability }}%"></span></span><span class="row-value">{{ prediction.probability }}%</span>
+                </div>
+                {% endfor %}
+            </div>
+            <p class="result-disclaimer">Research and educational use only. This output is not a diagnosis and must not replace review by a qualified clinician.</p>
+        </div>
+    </section>
+    <div class="result-actions">
+        <a class="analyze-button" href="{{ url_for('home') }}"><span>Analyze another image</span><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12m-5-5 5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <span class="privacy-line"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 2.5 4 5v4.7c0 3.7 2.5 6.2 6 7.8 3.5-1.6 6-4.1 6-7.8V5l-6-2.5Z" stroke="currentColor" stroke-width="1.4"/><path d="m7.5 9.8 1.7 1.7 3.5-3.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Image not retained</span>
+    </div>
+</div>
+{% endblock %}
